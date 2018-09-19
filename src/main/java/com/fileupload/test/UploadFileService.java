@@ -24,46 +24,35 @@ public class UploadFileService {
             @FormDataParam("file") FormDataContentDisposition fileDetail) {
 
         //Change the location where the file should be saved
-        String uploadedFileLocation = "/home/thishani/uploaded/" + fileDetail.getFileName();
+        String uploadedFileLocation = "/home/user1/uploaded/" + fileDetail.getFileName();
         // save it
         writeToFile(uploadedInputStream, uploadedFileLocation);
-
         String output = "File uploaded to : " + uploadedFileLocation;
-
         return Response.status(200).entity(output).build();
-
     }
 
     @POST
-    @Path("/uploadFormData")
+    @Path("/testFormData")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadFormData(@FormDataParam("file") InputStream uploadedInputStream,
             @FormDataParam("randomName") String randomName) {
-
         String output = "Message Accepted!";
-
         return Response.status(200).entity(output).build();
-
     }
 
     // save uploaded file to new location
     private void writeToFile(InputStream uploadedInputStream, String uploadedFileLocation) {
-
         try {
             OutputStream out = new FileOutputStream(new File(uploadedFileLocation));
             int read = 0;
             byte[] bytes = new byte[1024];
-
             while ((read = uploadedInputStream.read(bytes)) != -1) {
                 out.write(bytes, 0, read);
             }
             out.flush();
             out.close();
         } catch (IOException e) {
-
             e.printStackTrace();
         }
-
     }
-
 }
